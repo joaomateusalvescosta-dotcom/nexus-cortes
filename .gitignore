@@ -1,0 +1,11 @@
+# Ignorar arquivos pesados de vídeo e áudio
+cortes_finalizados/
+audios_temp/
+*.mp4
+*.m4a
+*.webm
+temp_*
+
+# Ignorar pastas de cache do Python e da IA
+__pycache__/
+.env
