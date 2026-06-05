@@ -1,7 +1,7 @@
-# 1. Ignora absolutamente TUDO o que existe na pasta
+# 1. Ignora 
 *
 
-# 2. MAS libera (não ignora) apenas os arquivos essenciais do projeto
+# 2. Libera
 !.gitignore
 !requirements.txt
 !main_nexus1.py
