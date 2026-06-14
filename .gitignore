@@ -1,7 +1,26 @@
 # 1. Ignora 
-*
+audios_brutos/
+audios_temp/
+cortes_aprovados/
+cortes_finalizados/
+cortes_postados/
+cortes_sniper/
+videos_brutos/
+teste_e_backup/
+*.mp4
+*.mp3
+*.log
+.env    
 
 # 2. Libera
 !.gitignore
 !requirements.txt
 !main_nexus1.py
+# Credenciais sensiveis
+client_secrets_youtube.json
+token_youtube.pickle
+*.pickle
+
+# Cache e gerados
+__pycache__/
+transcripts/
