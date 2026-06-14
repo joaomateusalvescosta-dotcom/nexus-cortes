@@ -182,10 +182,10 @@ def baixar_video_bruto(url_youtube: str) -> str:
         "outtmpl": caminho_video,
         "quiet": True,
         "no_warnings": True,
-        # Robustez de rede — o YouTube às vezes tem servidores instáveis (rr2.googlevideo.com etc)
+        # Robustez de rede 
         "retries": 10,                    # tentativas para o download como um todo
         "fragment_retries": 10,           # tentativas para cada fragmento de stream
-        "socket_timeout": 60,             # 60s antes de declarar timeout (padrão é 20s)
+        "socket_timeout": 60,             # 60s antes de declarar timeout 
         "retry_sleep_functions": {        # backoff exponencial entre tentativas
             "http": lambda n: min(2 ** n, 30),
             "fragment": lambda n: min(2 ** n, 30),
@@ -230,11 +230,7 @@ def baixar_video_bruto(url_youtube: str) -> str:
 # CORTE LOCAL
 #
 # Recebe o vídeo já baixado em videos_brutos/ e usa o ffmpeg para
-# extrair o trecho com precisão. Muito mais estável do que cortar
-# direto no yt-dlp (que gerava "no stream" em muitos formatos).
-#
-# -ss antes de -i: seek rápido (nem sempre frame-accurate)
-# -t: duração do trecho
+# extrair o trecho com precisão. 
 # Filtro vertical: converte para 9:16 com fundo borrado
 # =============================================================================
 def cortar_video_local(caminho_video: str, inicio: float, fim: float, nome_arquivo: str) -> bool:
@@ -323,28 +319,6 @@ def mesclar_segmentos(segmentos: list) -> list:
 
 # =============================================================================
 # AJUSTE DE FIM DE CORTE — BASEADO EM PAUSAS REAIS DO ÁUDIO
-#
-# Por que pausa real (gap entre segmentos) e não só pontuação?
-#   O Whisper transcreve pontuação de forma inconsistente em PT-BR (esquece
-#   pontos, troca por vírgula, etc). Pausa real é um sinal acústico que não
-#   depende do Whisper acertar a transcrição — se houve silêncio entre dois
-#   segmentos, é porque o falante de fato parou de falar.
-#
-# Como funciona:
-#   1. Procura pausas (gap entre segmentos consecutivos) na janela ao redor
-#      do fim calculado
-#   2. Filtra só pausas longas o suficiente para serem fim de fala (não vírgula)
-#   3. Pega a pausa mais próxima do fim calculado
-#   4. Adapta o "respiro" depois da pausa conforme o tipo de finalização:
-#        - Risada/exclamação → 2s para "digerir" o momento
-#        - Ponto final → 0.3s, corte objetivo
-#        - Sem pontuação → 0.5s, transição natural
-#   5. Se não achar pausa, mantém o fim original (fallback seguro)
-#
-# Valores baseados em pesquisas específicas em Português Brasileiro:
-#   - Fronteira entonacional (IPh) em PT-BR: ~300ms (Fortunato-Tavares, CoDAS 2023)
-#   - Pausa mínima perceptível em PT-BR: ~100ms (Mello et al., De Gruyter)
-#   - Falantes BR usam gaps mais largos antes de turno (ResearchGate 2024)
 # =============================================================================
 JANELA_AJUSTE_FIM       = 8.0   # tolerância para buscar pausa (segundos)
 PAUSA_MINIMA_FIM_FALA   = 0.5   # gap mínimo para considerar fim de fala (acima dos 300ms de IPh)
@@ -401,7 +375,7 @@ def ajustar_fim_corte(fim_calculado: float, segmentos_whisper: list, duracao_tot
             })
 
     if not pausas_candidatas:
-        # Nenhuma pausa real encontrada — mantém o fim original (fallback seguro)
+        # Nenhuma pausa real encontrada (fallback seguro)
         log.info(f"    Fim mantido: {fim_calculado:.1f}s (nenhuma pausa real na janela)")
         return min(fim_calculado, duracao_total)
 
@@ -675,7 +649,7 @@ def processar_url(url: str):
         return
 
     # 6. Baixa o vídeo completo UMA vez em videos_brutos/
-    #    (reutiliza se já existir — não baixa de novo)
+    #    (reutiliza se já existir)
     caminho_video = baixar_video_bruto(url)
 
     # 7. Gera todos os cortes localmente em paralelo
@@ -728,7 +702,7 @@ def processar_url(url: str):
             except Exception as e:
                 log.error(f"Erro ao processar {trecho['nome_saida']}: {e}")
 
-    # 8. Limpeza — remove só o áudio temp, vídeo bruto fica em videos_brutos/
+    # 8. Limpeza (remove só o áudio temp, vídeo bruto fica em videos_brutos/)
     if os.path.exists(caminho_audio):
         os.remove(caminho_audio)
 

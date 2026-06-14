@@ -6,17 +6,10 @@ from pathlib import Path
 log = logging.getLogger(__name__)
 
 # =============================================================================
-# SUBTITLE BURNER — Legendas estilo short-form (Opus Clip / Submagic)
-#
-# Gera arquivo .ass (Advanced SubStation Alpha) com 2-3 palavras por vez,
-# em CAIXA ALTA, fonte grossa com contorno preto. Depois usa ffmpeg para
+# SUBTITLE BURNER — Legendas estilo short-form 
+# Gera arquivo .ass com 2-3 palavras por vez, em CAIXA ALTA, fonte grossa
+# com contorno preto. Depois usa ffmpeg para
 # "queimar" a legenda no vídeo (burn-in), tornando-a parte da imagem.
-#
-# Por que .ass e não .srt?
-#   .srt é limitado a texto plano. .ass suporta estilos avançados (fonte,
-#   cor, contorno, sombra, posição) que são essenciais para o visual de
-#   short-form.
-#
 # Como funciona:
 #   1. Recebe os "words" do Whisper (palavras com timestamps individuais)
 #   2. Agrupa em chunks de 2-3 palavras
@@ -31,8 +24,8 @@ COR_TEXTO         = "&H00FFFFFF" # branco (formato ASS: AABBGGRR)
 COR_CONTORNO      = "&H00000000" # preto
 ESPESSURA_CONTORNO = 3
 SOMBRA            = 1
-POSICAO_VERTICAL  = 75           # % da altura da tela (75 = 3/4 para baixo)
-PALAVRAS_POR_CHUNK = 3           # 2 ou 3 funciona bem; mais que isso polui
+POSICAO_VERTICAL  = 75           # % da altura da tela 
+PALAVRAS_POR_CHUNK = 3           # 2 ou 3 funciona bem;
 
 
 def _formatar_tempo_ass(segundos: float) -> str:

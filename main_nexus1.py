@@ -282,12 +282,6 @@ def mesclar_segmentos(segmentos: list) -> list:
 #    - Score máximo de sentimento nos segmentos: 0–15 pts
 #    - Variação de sentimento ao longo do trecho: 0–15 pts
 #      (variação alta = conversa dinâmica, não monótona)
-#
-# Limitações conhecidas:
-#   - Score de engajamento é preditivo, não garantido
-#   - Densidade de fala assume PT-BR coloquial (~130 wpm como referência)
-#   - Sem dados históricos de canal, o score é uma heurística calibrada
-#     em boas práticas de short-form video, não em dados reais do seu canal
 # =============================================================================
 def calcular_score_engajamento(
     trecho: dict,
@@ -331,7 +325,7 @@ def calcular_score_engajamento(
 
     pts_silencio = max(0, 10 - int(silencio_inicio * 10))   # -10 pts por segundo de silêncio
 
-    # Densidade de fala — referência: ~130 wpm em PT-BR coloquial
+    # Densidade de fala 
     wpm = (len(palavras) / duracao) * 60 if duracao > 0 else 0
     if 100 <= wpm <= 170:
         pts_densidade = 5

@@ -29,23 +29,16 @@ PASTA_TRANSCRIPTS = "transcripts"   # gerado pela main_nexus1 (ver abaixo)
 
 # -----------------------------------------------------------------------------
 # CONTROLE DE QUOTA DO YOUTUBE
-#
-# A API do YouTube tem cota diária de 10.000 unidades no plano gratuito.
-# Cada upload custa ~1.600 unidades → máximo de ~6 uploads por dia.
-# Para não estourar a cota, postamos apenas os N cortes de MAIOR score.
-#
-# O score está no próprio nome do arquivo (corte_01_score84.mp4 → 84),
+# O score está no próprio nome do arquivo,
 # então ordenamos por ele e pegamos os melhores.
 # -----------------------------------------------------------------------------
-MAX_UPLOADS_POR_EXECUCAO = 5   # fica abaixo do limite de 6 por segurança
+MAX_UPLOADS_POR_EXECUCAO = 5   # fica abaixo do limite 
 
 # -----------------------------------------------------------------------------
 # PRIVACIDADE DOS VÍDEOS
-#   "private"  → só você vê (ideal para TESTAR)
+#   "private"  → só você vê
 #   "unlisted" → quem tem o link vê, não aparece no canal
-#   "public"   → todo mundo vê (produção real)
-#
-# Para o primeiro teste, deixe "private" para não despejar vídeos no canal.
+#   "public"   → todo mundo vê 
 # -----------------------------------------------------------------------------
 PRIVACIDADE_TESTE = "private"
 
@@ -58,7 +51,6 @@ PUBLISHERS_ATIVOS = [
 
 # =============================================================================
 # EXTRAI O SCORE DO NOME DO ARQUIVO
-# corte_01_score84.mp4 → 84
 # Usado para ordenar os cortes e publicar só os melhores.
 # =============================================================================
 def extrair_score(caminho: str) -> int:
@@ -73,15 +65,7 @@ def extrair_score(caminho: str) -> int:
 
 
 # =============================================================================
-# CARREGA METADADOS SALVOS PELA MAIN_NEXUS1
-#
-# A main_nexus1 salva um JSON por corte em transcripts/ com:
-#   {
-#     "transcript": "...",
-#     "temas":      ["conselho", ...],
-#     "score":      78
-#   }
-#
+# CARREGA METADADOS SALVOS 
 # Isso evita re-transcrever o vídeo na hora de publicar.
 # Se o JSON não existir, publica com metadados mínimos de fallback.
 # =============================================================================
@@ -119,7 +103,7 @@ def publicar_arquivo(
         try:
             return publisher.publicar(caminho, titulo, descricao, tags, privacidade=PRIVACIDADE_TESTE)
         except TypeError:
-            # Publisher que não aceita o parâmetro privacidade (ex: TikTok)
+            # Publisher que não aceita o parâmetro privacidade
             return publisher.publicar(caminho, titulo, descricao, tags)
 
     with ThreadPoolExecutor(max_workers=len(publishers)) as executor:
@@ -138,14 +122,6 @@ def publicar_arquivo(
 
 # =============================================================================
 # REVISÃO INTERATIVA
-#
-# Exibe os metadados gerados e permite editar antes de confirmar.
-# Fluxo por corte:
-#   1. Mostra título, descrição e hashtags gerados pela IA
-#   2. Usuário pode confirmar (Enter), editar campo a campo, ou pular o corte
-#
-# Esse passo é opcional — para rodar sem interação (modo automático full),
-# defina a variável de ambiente NEXUS_AUTO=1
 # =============================================================================
 MODO_AUTO = os.getenv("NEXUS_AUTO", "0") == "1"
 
@@ -286,7 +262,7 @@ def main():
             nome_arquivo     = nome,
         )
 
-        # 3. Revisão interativa (ou passa direto no modo auto)
+        # 3. Revisão interativa
         metadados_finais = revisar_metadados(metadados, nome)
         if metadados_finais is None:
             continue

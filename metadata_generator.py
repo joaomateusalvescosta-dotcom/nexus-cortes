@@ -11,16 +11,6 @@ log = logging.getLogger(__name__)
 # Usa a API do Gemini Flash (Google) para gerar título, descrição e hashtags
 # automaticamente a partir do transcript do corte e dos temas detectados.
 #
-# Por que Gemini Flash?
-#   - API gratuita: 1500 requests/dia sem cartão de crédito
-#   - Excelente em PT-BR e criatividade de títulos
-#   - Simples de configurar
-#
-# CONFIGURAÇÃO:
-#   1. Acesse https://aistudio.google.com
-#   2. Clique em "Get API Key" — é gratuito, só precisa de conta Google
-#   3. Adicione no seu .env:  GEMINI_API_KEY=sua_chave
-#
 # HASHTAGS PRÉ-SELECIONADAS POR NICHO:
 #   Edite o dicionário HASHTAGS_POR_NICHO abaixo para customizar para o
 #   seu canal. As hashtags do nicho detectado são somadas às geradas pela IA.
@@ -34,7 +24,6 @@ GEMINI_API_URL = (
 
 # ------------------------------------------------------------------
 # HASHTAGS PRÉ-SELECIONADAS POR NICHO
-# Mapeadas pelos mesmos temas do TEMAS_RELEVANTES da main_nexus1.py.
 # ------------------------------------------------------------------
 HASHTAGS_POR_NICHO: dict[str, list[str]] = {
     "conselho": [
@@ -70,7 +59,7 @@ HASHTAGS_POR_NICHO: dict[str, list[str]] = {
 # Hashtags fixas que vão em todo corte independente do nicho
 HASHTAGS_FIXAS = ["shorts", "cortes", "podcast", "viral"]
 
-# Limite de hashtags no total (YouTube Shorts performa melhor com 3–8)
+# Limite de hashtags no total
 MAX_HASHTAGS_TOTAL = 8
 
 
