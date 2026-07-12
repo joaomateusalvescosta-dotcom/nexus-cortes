@@ -76,4 +76,4 @@ Whisper (transcrição), Transformers com XLM-RoBERTa e DistilBART (análise), y
 
 ## Status
 
-Funciona por inteiro pro YouTube. Instagram e TikTok ficam pra depois — o TikTok foi removido por enquanto porque a API exige uma aprovação de app que não saiu.
+Funciona por inteiro pro YouTube. Instagram e TikTok ficam pra depois (TikTok foi removido por enquanto porque a API exige uma aprovação de app que não saiu).
